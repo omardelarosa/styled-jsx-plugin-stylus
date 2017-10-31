@@ -32,36 +32,13 @@ Next, add `styled-jsx-plugin-stylus` to the `styled-jsx`'s `plugins` in your bab
 }
 ```
 
-## Stylus options
-
-Node-sass can be configured using `sassOptions`. This is useful for setting options such as `includePaths` or `precision`.
-
-```json
-{
-  "plugins": [
-    [
-      "styled-jsx/babel",
-      {
-        "plugins": [
-          ["styled-jsx-plugin-sass", {
-              "sassOptions": {
-                "includePaths": ["./styles"],
-                "precision": 2
-              }
-            }
-          ]
-        ]
-      }
-    ]
-  ]
-}
-```
-
 #### Notes
 
 `styled-jsx-plugin-stylus` uses `styled-jsx`'s plugin system which is supported from version 2.
 
 Read more on their repository for further info.
+
+This plugin is a bare minimum implementation.  More to come.
 
 ## License
 
