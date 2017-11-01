@@ -1,6 +1,4 @@
-const stylus = require('stylus')
-
-module.exports = (css, settings) => {
+module.exports = (css, settings, stylus = require('stylus')) => {
   if (!settings) settings = {};
   const cssWithPlaceholders = css
     .replace(/\:\s*%%styled-jsx-placeholder-(\d+)%%/g, (_, id) =>
@@ -13,7 +11,7 @@ module.exports = (css, settings) => {
   const beforeRender = settings.beforeRender;
   let preprocessed;
   if (typeof beforeRender === 'function') {
-    preprocessed = beforeRender(stylus, css).render(css.toString());
+    preprocessed = beforeRender(stylus(css.toString()), css).render();
   } else {
     preprocessed = stylus.render(css.toString());
   }

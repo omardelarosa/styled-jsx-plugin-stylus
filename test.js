@@ -79,20 +79,33 @@ describe('styled-jsx-plugin-stylus', () => {
       }
       `
     );
-    let beforeRender = sinon.spy((stylus, css) => stylus);
-    let render = sinon.spy(stylus, 'render');
-    let stylusMock;
+    let beforeRender = sinon.spy((stylus, css) => {
+      stylus.import('fixture.css');
+      return stylus;
+    });
+    let render;
+    let importer;
+    let mockStylus = {};
+    let stylusRenderer;
     let opts = {};
     let preprocessedCss;
 
     describe('when beforeRender function is provided', () => {
       beforeEach(() => {
-        render.reset();
+        render = sinon.spy((s) => outputCss);
+        importer = sinon.spy((s) => s);
         beforeRender.reset();
         opts = {
           beforeRender
         };
-        preprocessedCss = plugin(inputStylus, opts);
+        mockStylus = (css) => {
+          return {
+            render,
+            'import': importer
+          }
+        };
+        stylusRenderer = mockStylus(inputStylus);
+        preprocessedCss = plugin(inputStylus, opts, mockStylus);
       });
 
       it('returns the correct preprocessed css string', () => {
@@ -103,27 +116,34 @@ describe('styled-jsx-plugin-stylus', () => {
         expect(beforeRender.calledOnce).to.eq(true);
       });
 
-      it('calls beforeRender with a stylus object', () => {
-        expect(beforeRender.calledWith(stylus)).to.eq(true);
-      });
-
       it('calls render function once', () => {
         expect(render.calledOnce).to.eq(true);
       });
 
-      it('calls render function with input css', () => {
-        expect(render.calledWith(inputStylus)).to.eq(true);
+      it('calls import function once', () => {
+        expect(importer.calledOnce).to.eq(true);
+      });
+
+      it('calls render function without any arguments', () => {
+        expect(render.args[0].length).to.eq(0);
       });
     });
 
     describe('when beforeRender function is not provided', () => {
       beforeEach(() => {
-        render.reset();
+        render = sinon.spy((s) => outputCss);
+        importer = sinon.spy((s) => s);
         beforeRender.reset();
+        mockStylus = (css) => {
+          return {
+            render,
+            'import': importer
+          }
+        };
         opts = {
           beforeRender: null
         };
-        preprocessedCss = plugin(inputStylus, opts);
+        preprocessedCss = plugin(inputStylus, opts, mockStylus());
       });
 
       it('returns the correct preprocessed css string', () => {
