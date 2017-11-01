@@ -3,6 +3,7 @@ const sinon = require('sinon');
 const plugin = require('./')
 const stripIndent = require('strip-indent');
 const stylus = require('stylus');
+const placeholders = require('./lib/placeholders');
 
 const cleanup = str => stripIndent(str).trim()
 
@@ -70,12 +71,14 @@ describe('styled-jsx-plugin-stylus', () => {
       `
       .my-class
         color red
+        background-color %%styled-jsx-placeholder-0%%
       `
     );
     const outputCss = cleanup(
       `
       .my-class {
         color: #f00;
+        background-color: %%styled-jsx-placeholder-0%%;
       }
       `
     );
@@ -165,7 +168,9 @@ describe('styled-jsx-plugin-stylus', () => {
       });
 
       it('calls render function with input css', () => {
-        expect(render.calledWith(inputStylus)).to.eq(true);
+        expect(
+          render.calledWith(placeholders.add(inputStylus))
+        ).to.eq(true);
       });
     });
   });
