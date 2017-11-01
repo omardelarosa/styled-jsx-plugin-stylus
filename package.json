@@ -1,6 +1,6 @@
 {
   "name": "styled-jsx-plugin-stylus",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Plugin to add Stylus support to styled-jsx",
   "main": "index.js",
   "author": "Omar Delarosa",
