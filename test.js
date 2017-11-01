@@ -92,11 +92,14 @@ describe('styled-jsx-plugin-stylus', () => {
 
     describe('when beforeRender function is provided', () => {
       beforeEach(() => {
-        render = sinon.spy((s) => outputCss);
+        render = sinon.spy((s, opts) => {
+          opts.use(mockStylus());
+          return outputCss;
+        });
         importer = sinon.spy((s) => s);
         beforeRender.reset();
         opts = {
-          beforeRender
+          use: beforeRender
         };
         mockStylus = (css) => {
           return {
@@ -104,8 +107,7 @@ describe('styled-jsx-plugin-stylus', () => {
             'import': importer
           }
         };
-        stylusRenderer = mockStylus(inputStylus);
-        preprocessedCss = plugin(inputStylus, opts, mockStylus);
+        preprocessedCss = plugin(inputStylus, opts, mockStylus());
       });
 
       it('returns the correct preprocessed css string', () => {
@@ -124,8 +126,8 @@ describe('styled-jsx-plugin-stylus', () => {
         expect(importer.calledOnce).to.eq(true);
       });
 
-      it('calls render function without any arguments', () => {
-        expect(render.args[0].length).to.eq(0);
+      it('calls render function with two arguments', () => {
+        expect(render.args[0].length).to.eq(2);
       });
     });
 
@@ -141,7 +143,7 @@ describe('styled-jsx-plugin-stylus', () => {
           }
         };
         opts = {
-          beforeRender: null
+          use: null
         };
         preprocessedCss = plugin(inputStylus, opts, mockStylus());
       });

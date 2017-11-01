@@ -32,8 +32,8 @@ Next, add `styled-jsx-plugin-stylus` to the `styled-jsx`'s `plugins` in your bab
 }
 ```
 
-### beforeRender
-To apply additional transformations to the stylus object before preprocessing begins, use the `beforeRender` callback in the options object:
+### stylus options
+To pass options to stylus before preprocessing begins, use an optional object in the babel config:
 
 ```javascript
 {
@@ -45,8 +45,8 @@ To apply additional transformations to the stylus object before preprocessing be
       	 	[ 
       	 		"styled-jsx-plugin-stylus"
       	 		{ 
-      	 			beforeRender(stylus) {
-      	 				return stylus
+      	 			use(style) {
+      	 				return style
       	 					.include('/path/to/module')
       	 					.define(...)
       	 					.set(...);
@@ -58,6 +58,9 @@ To apply additional transformations to the stylus object before preprocessing be
   ]
 }
 ```
+
+More information is available in the stylus docs:
+http://stylus-lang.com/docs/js.html#usefn
 
 #### Notes
 
