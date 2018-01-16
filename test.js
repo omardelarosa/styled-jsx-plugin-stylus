@@ -54,6 +54,20 @@ describe('styled-jsx-plugin-stylus', () => {
         `
       ],
       [
+        'dynamic variables in selectors',
+        `
+          %%styled-jsx-placeholder-0%%
+          %%styled-jsx-placeholder-1%%
+            background red
+        `,
+        `
+          %%styled-jsx-placeholder-0%%,
+          %%styled-jsx-placeholder-1%% {
+            background: #f00;
+          }
+        `
+      ],
+      [
         'dynamic variables in pseudo selectors',
         `
           h1
