@@ -52,7 +52,36 @@ describe('styled-jsx-plugin-stylus', () => {
           display: none;
         }
         `
-      ]
+      ],
+      [
+        'dynamic variables in pseudo selectors',
+        `
+          h1
+            &:nth-child(%%styled-jsx-placeholder-0%%)
+              background red
+        `,
+        `
+          h1:nth-child(%%styled-jsx-placeholder-0%%) {
+            background: #f00;
+          }
+        `
+      ],
+      [
+        'dynamic variables in values interpolation',
+        `
+          h1
+            background red
+            padding %%styled-jsx-placeholder-0%% %%styled-jsx-placeholder-1%%px
+            margin-top %%styled-jsx-placeholder-2%%px
+        `,
+        `
+          h1 {
+            background: #f00;
+            padding: %%styled-jsx-placeholder-0%% %%styled-jsx-placeholder-1%%px;
+            margin-top: %%styled-jsx-placeholder-2%%px;
+          }
+        `
+      ],
     ];
 
     cases.forEach(([description, stylus, css]) => {
